@@ -1,7 +1,18 @@
 const express = require('express')
 const mustacheExpress = require('mustache-express')
 const moviesRouter = require('./routes/movies')
+const session = require('express-session')
+require('dotenv').config()
 const app = express()
+
+const PORT = process.env.PORT 
+
+// middleware for session 
+app.use(session({
+    secret: process.env.SESSION_SECRET_KEY, 
+    saveUninitialized: false, 
+    resave: true 
+}))
 
 app.use(express.urlencoded())
 
@@ -15,6 +26,6 @@ app.set('view engine', 'mustache')
 // register the movies router 
 app.use('/', moviesRouter)
 
-app.listen(8080,() => {
+app.listen(PORT,() => {
     console.log('Server is running...')
 })
